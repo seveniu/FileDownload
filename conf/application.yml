@@ -50,9 +50,9 @@ spring:
 fileDownloader:
   port: 20013
   filter: bloomFilter
+  bloomPath: download-file-bloom/download_file_bloom
   recorder: cacheRecorder
   storagePath: download-file/
-  bloomPath: download-file-bloom/download_file_bloom
   threadNum: 20
 
 ---
@@ -61,7 +61,7 @@ spring:
 fileDownloader:
   port: 20013
   filter: bloomFilter
-  recorder: cacheRecorder
-  storagePath: download-file/
   bloomPath: download-file-bloom/download_file_bloom
+  recorder: cacheRecorder
+  storagePath: /data/download-file/
   threadNum: 20

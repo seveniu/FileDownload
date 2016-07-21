@@ -29,6 +29,7 @@ import java.util.Map;
 public class FileDownloadJob implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger downloadErrorLogger = LoggerFactory.getLogger("download-error");
 
     private String url;
     private FileDownloadProcess fileDownloadProcess;
@@ -60,6 +61,9 @@ public class FileDownloadJob implements Runnable {
             }
         }
         Result result = download(url, fileDownloadProcess);
+        if (result == null) {
+            return;
+        }
         logger.debug("cur ----  downloadFile : " + url + "  name :" + result.getStorageName());
         resultList.add(result);
     }
@@ -103,6 +107,7 @@ public class FileDownloadJob implements Runnable {
         } catch (Exception e) {
             //TODO:下载 错误 时,记录
             logger.warn("file download error url: {} , error : {}", url, e.getMessage());
+            downloadErrorLogger.error("file download error url:{}, error : {}", url, e.getMessage());
             return null;
         } finally {
             try {

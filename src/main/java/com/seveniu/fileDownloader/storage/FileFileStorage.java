@@ -1,5 +1,7 @@
 package com.seveniu.fileDownloader.storage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,13 +17,14 @@ import java.nio.file.Paths;
  */
 @Component
 public class FileFileStorage implements FileStorage {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Path storagePath = null;
 
     @Autowired
     public FileFileStorage(@Value("${fileDownloader.storagePath}") String storagePath) throws IOException {
         this.storagePath = this.getStoragePath(storagePath);
-        System.out.println(this.storagePath);
+        logger.info("storage path : {}", storagePath);
         if (!Files.exists(this.storagePath)) {
             Files.createDirectory(this.storagePath);
         }

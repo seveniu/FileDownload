@@ -37,7 +37,7 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'web'
+    baseName = 'fileDownload'
     version = '0.1.0'
 }
 
@@ -126,12 +126,12 @@ task wrapper(type: Wrapper) {
 
 mainClassName="com.seveniu.AppFileDownloader"
 bootRun {
-    // 从 gradle.properties 中读取
+    // 从 system 参数 中读取
     String springProfile = System.getProperty("spring.profiles.active")
-    println("system prop spring.profiles.active : ${springProfile}")
+    println("system prop spring.profiles.active : ${profile}")
     //手动设置 jvm 属性
 //    System.setProperty("spring.profiles.active", (String)springProfile)
-    systemProperties.putAt("spring.profiles.active",springProfile)
+    systemProperties.putAt("spring.profiles.active",profile)
     addResources = true
 }
 
