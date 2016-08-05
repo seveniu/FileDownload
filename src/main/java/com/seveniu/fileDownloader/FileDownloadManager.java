@@ -60,7 +60,7 @@ public class FileDownloadManager {
     }
 
 
-    public Map<String,Result> download(List<String> urls) throws InterruptedException {
+    public Map<String, Result> download(List<String> urls) throws InterruptedException {
         DownloadResult result = new DownloadResult(urls.size());
         FileDownloadJob[] fileDownloadJobs = new FileDownloadJob[urls.size()];
         for (int i = 0; i < fileDownloadJobs.length; i++) {
