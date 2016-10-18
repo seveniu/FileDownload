@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,18 @@ public class DownloadApi {
         });
         try {
             Map<String, Result> results = fileDownloadManager.download(urlList);
+            return Json.toJson(results);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return "[]";
+        }
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "text/json;charset=UTF-8")
+    @ResponseBody
+    public String get(String url) {
+        try {
+            Map<String, Result> results = fileDownloadManager.download(Collections.singletonList(url));
             return Json.toJson(results);
         } catch (InterruptedException e) {
             e.printStackTrace();
