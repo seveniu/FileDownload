@@ -30,6 +30,7 @@ public class BloomFilterImpl implements FileFilter, ShutdownHook {
     private BloomFilter<CharSequence> images;
     private AtomicInteger count = new AtomicInteger();
     private String serializablePath;
+    private static final int SERIALIZABLE_THRESHOLD = 2000;
 
     @Autowired
     public BloomFilterImpl(@Value("${fileDownloader.bloomPath}") String serializablePath) {
@@ -49,7 +50,7 @@ public class BloomFilterImpl implements FileFilter, ShutdownHook {
         images.put(md5);
         images.put(url);
         count.incrementAndGet();
-        if (count.get() > 100) {
+        if (count.get() > SERIALIZABLE_THRESHOLD) {
             count.set(0);
             serializableSync();
         }
