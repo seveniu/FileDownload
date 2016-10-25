@@ -89,9 +89,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-remote-shell:${springBootVersion}")
     compile('com.google.guava:guava:18.0')
     compile('org.apache.thrift:libthrift:0.9.3')
+    compile('org.apache.httpcomponents:fluent-hc:4.5.2')
 
-
-    compile('com.seveniu:Commons:0.0.12')
+    compile('com.seveniu:commons:0.0.13')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 

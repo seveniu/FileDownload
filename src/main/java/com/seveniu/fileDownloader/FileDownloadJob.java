@@ -8,6 +8,8 @@ import com.seveniu.util.UserAgent;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -30,6 +32,7 @@ public class FileDownloadJob implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private Logger downloadErrorLogger = LoggerFactory.getLogger("download-error");
+    private static final RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(10).build();
 
     private String url;
     private FileDownloadProcess fileDownloadProcess;
@@ -68,7 +71,7 @@ public class FileDownloadJob implements Runnable {
         resultList.add(result);
     }
 
-    private String getReferer(String url) {
+    private static String getReferer(String url) {
         try {
             URL url1 = new URL(url);
             return url1.getProtocol() + "://" + url1.getHost();
@@ -86,6 +89,7 @@ public class FileDownloadJob implements Runnable {
         try {
             // 以get方法执行请求
             httpGet = new HttpGet(url);
+            httpGet.setConfig(requestConfig);
             httpGet.addHeader("User-Agent", UserAgent.getUserAgent());
             httpGet.addHeader("referer", getReferer(url));
 
@@ -147,5 +151,16 @@ public class FileDownloadJob implements Runnable {
             }
         }
         return fileName;
+    }
+
+    public static void main(String[] args) throws IOException {
+        String url = "http://www.gdgz.gov.cn/webImage/image/ZYM_8121??(2).jpg";
+        byte[] bytes = Request.Get(url)
+                .connectTimeout(20 * 1000)
+                .addHeader("User-Agent", UserAgent.getUserAgent())
+                .addHeader("referer", getReferer(url))
+                .execute()
+                .returnContent()
+                .asBytes();
     }
 }

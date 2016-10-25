@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -59,8 +60,10 @@ public class FileDownloadManager {
         this.httpClient = getHttpClient();
     }
 
-
     public Map<String, Result> download(List<String> urls) throws InterruptedException {
+        if (urls == null || urls.size() == 0) {
+            return Collections.emptyMap();
+        }
         DownloadResult result = new DownloadResult(urls.size());
         FileDownloadJob[] fileDownloadJobs = new FileDownloadJob[urls.size()];
         for (int i = 0; i < fileDownloadJobs.length; i++) {
@@ -68,14 +71,14 @@ public class FileDownloadManager {
         }
 
         CountDownExecutor countDownExecutor = new CountDownExecutor(executor, fileDownloadJobs);
-        countDownExecutor.await();
+        countDownExecutor.await(urls.size() * 10, TimeUnit.SECONDS);
         return result.getResultList();
     }
 
     private CloseableHttpClient getHttpClient() {
 
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(5, TimeUnit.MINUTES);
-        cm.setMaxTotal(threadNum);
+        cm.setMaxTotal(threadNum * 3);
         return HttpClients.custom().setConnectionManager(cm).build();
     }
 
