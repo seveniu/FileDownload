@@ -30,14 +30,16 @@ shell:
 #    command-path-patterns: classpath*:/cmd/** #defalut /commands/**,/crash/commands/**
 
 
-
+---
+spring:
+    profiles: stable
 fileDownloader:
   port: 20013
   filter: bloomFilter
   bloomPath: download-file-bloom/download_file_bloom
   recorder: cacheRecorder
   storagePath: /data/download-file/
-  threadNum: 20
+  threadNum: 50
 
 ---
 spring:
