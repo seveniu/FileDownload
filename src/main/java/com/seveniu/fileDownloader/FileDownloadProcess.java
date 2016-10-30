@@ -43,7 +43,7 @@ public class FileDownloadProcess {
     /**
      * 返回 md5.extension
      */
-    public Result process(String url, String fileName, byte[] bytes) {
+    public Result process(String url, String fileName, String fileType, byte[] bytes) {
         //文件名
         String originName;
         // 扩展名
@@ -54,6 +54,9 @@ public class FileDownloadProcess {
         } else {
             originName = getName(url);
             extension = getExtension(url);
+        }
+        if (fileType != null && fileType.length() > 0) {
+            extension = fileType;
         }
 
         String md5 = md5(bytes);
@@ -73,7 +76,7 @@ public class FileDownloadProcess {
             // 记录
             fileRecorder.record(url, originName, extension, md5, storageName);
         }
-        return new Result(url,storageName,originName,extension);
+        return new Result(url, storageName, originName, extension);
     }
 
 
@@ -84,7 +87,7 @@ public class FileDownloadProcess {
         if (m.find()) {
             return m.group(1);
         }
-        return "";
+        return "jpeg";
     }
 
     protected String md5(byte[] bytes) {
@@ -97,6 +100,10 @@ public class FileDownloadProcess {
 
     public String getName(String url) {
         String temp = url.substring(url.lastIndexOf("/") + 1).trim();
-        return temp.substring(0, temp.lastIndexOf("."));
+        int index = temp.lastIndexOf(".");
+        if (index < 0) {
+            return "";
+        }
+        return temp.substring(0, index);
     }
 }

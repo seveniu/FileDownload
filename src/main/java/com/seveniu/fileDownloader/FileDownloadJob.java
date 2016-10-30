@@ -88,6 +88,9 @@ public class FileDownloadJob implements Runnable {
         InputStream inputStream = null;
         try {
             // 以get方法执行请求
+            if (!url.startsWith("http")) {
+                return null;
+            }
             httpGet = new HttpGet(url);
             httpGet.setConfig(requestConfig);
             httpGet.addHeader("User-Agent", UserAgent.getUserAgent());
@@ -104,14 +107,20 @@ public class FileDownloadJob implements Runnable {
             if (cd != null) {
                 fileName = getFileName(cd.getValue());
             }
+            Header contentTypeHeader = responseGet.getLastHeader("Content-Type");
+            String contentType = null;
+            if (contentTypeHeader != null) {
+                contentType = getFileType(contentTypeHeader.getValue());
+
+            }
             HttpEntity entity = responseGet.getEntity();
             inputStream = entity.getContent();
             byte[] bytes = IOUtils.toByteArray(inputStream);
-            return fileDownloadProcess.process(url, fileName, bytes);
+            return fileDownloadProcess.process(url, fileName, contentType, bytes);
         } catch (Exception e) {
             //TODO:下载 错误 时,记录
-            logger.warn("file download error url: {} , error : {}", url, e.getMessage());
-            downloadErrorLogger.error("file download error url:{}, error : {}", url, e.getMessage());
+            logger.warn("file download error url: {} , error : {}", url, e);
+            downloadErrorLogger.error("file download error url:{}, error : {}", url, e);
             return null;
         } finally {
             try {
@@ -151,6 +160,14 @@ public class FileDownloadJob implements Runnable {
             }
         }
         return fileName;
+    }
+
+    private String getFileType(String fileType) {
+        if (fileType != null && fileType.length() > 0) {
+            return fileType.split("/")[1];
+        }
+
+        return null;
     }
 
     public static void main(String[] args) throws IOException {

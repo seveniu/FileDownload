@@ -26,7 +26,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by seveniu on 5/25/16.
+ * Created by seveniu
+ * on 5/25/16.
  * ImageDownloader
  */
 @Component
