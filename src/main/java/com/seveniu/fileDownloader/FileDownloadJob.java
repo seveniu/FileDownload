@@ -32,7 +32,7 @@ public class FileDownloadJob implements Runnable {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private Logger downloadErrorLogger = LoggerFactory.getLogger("download-error");
-    private static final RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(10).build();
+    private static final RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(10 * 1000).build();
 
     private String url;
     private FileDownloadProcess fileDownloadProcess;
