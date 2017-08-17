@@ -1,6 +1,7 @@
 package com.seveniu.web;
 
-import com.seveniu.common.json.Json;
+
+import com.seveniu.util.Json;
 
 import java.util.List;
 import java.util.Map;
@@ -168,6 +169,7 @@ public class ApiResult {
     public static ApiResult get() {
         return new ApiResult();
     }
+
     public static ApiResult success() {
         return ApiResult.get().setCode(SUCCESS);
     }
@@ -175,6 +177,7 @@ public class ApiResult {
     public static ApiResult exception(Exception e) {
         return ApiResult.get().setCode(EXCEPTION).setMessage(e.getMessage());
     }
+
     public String toJson() {
         return Json.toJson(this);
     }

@@ -1,10 +1,8 @@
 package com.seveniu.fileDownloader;
 
-import com.seveniu.common.thread.CountDownExecutor;
 import com.seveniu.fileDownloader.filter.FileFilter;
 import com.seveniu.fileDownloader.recorder.FileRecorder;
 import com.seveniu.fileDownloader.storage.FileStorage;
-import com.seveniu.thriftServer.Result;
 import com.seveniu.util.AppContext;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;

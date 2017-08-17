@@ -1,6 +1,6 @@
 package com.seveniu.fileDownloader.recorder;
 
-import com.seveniu.thriftServer.Result;
+import com.seveniu.fileDownloader.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

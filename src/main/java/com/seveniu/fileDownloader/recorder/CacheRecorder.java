@@ -3,7 +3,7 @@ package com.seveniu.fileDownloader.recorder;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.seveniu.thriftServer.Result;
+import com.seveniu.fileDownloader.Result;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;

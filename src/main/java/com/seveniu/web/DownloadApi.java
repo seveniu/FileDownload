@@ -1,9 +1,9 @@
 package com.seveniu.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.seveniu.common.json.Json;
 import com.seveniu.fileDownloader.FileDownloadManager;
-import com.seveniu.thriftServer.Result;
+import com.seveniu.fileDownloader.Result;
+import com.seveniu.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

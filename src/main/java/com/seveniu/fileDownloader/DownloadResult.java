@@ -1,7 +1,7 @@
 package com.seveniu.fileDownloader;
 
-import com.seveniu.common.str.StrUtil;
-import com.seveniu.thriftServer.Result;
+
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class DownloadResult {
     }
 
     public synchronized void add(Result result) {
-        if(result == null || StrUtil.isEmpty(result.getUrl() )) {
+        if(result == null || StringUtils.isEmpty(result.getUrl() )) {
             return;
         }
         resultList.put(result.getUrl(),result);

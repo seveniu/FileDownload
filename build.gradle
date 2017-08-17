@@ -8,22 +8,10 @@ ext {
 }
 buildscript {
     repositories {
-        maven {
-            credentials {
-                username "guest"
-                password "qwerzxcvasdf"
-            }
-            url "http://101.200.170.176:8081/nexus/content/groups/public/"
-        }
-//        mavenLocal()
-//        if(profile.toUpperCase() == "DEV" ) {
-//            maven { url "http://192.168.0.165:8081/nexus/content/groups/public/" }
-//        } else if(profile.toUpperCase() == "USA" ) {
-//            mavenCentral()
-//        } else {
-//        }
-//        maven { url 'https://repo.spring.io/plugins-release' }
-//        maven { url "http://maven.oschina.net/content/groups/public/"}
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
+        mavenCentral()
+        maven { url 'https://repo.spring.io/plugins-release' }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -42,21 +30,9 @@ jar {
 }
 
 repositories {
-    maven {
-        credentials {
-            username "guest"
-            password "qwerzxcvasdf"
-        }
-        url "http://101.200.170.176:8081/nexus/content/groups/public/"
-    }
-//    mavenLocal()
-//    if(profile.toUpperCase() == "DEV" ) {
-//    } else if(profile.toUpperCase() == "USA" ) {
-//        mavenCentral()
-//    } else {
-//    }
-//    maven { url "http://106.120.106.228:18081/content/groups/public/" }
-//    maven { url "http://maven.oschina.net/content/groups/public/"}
+    mavenLocal()
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public"}
+    mavenCentral()
 }
 
 sourceCompatibility = 1.8
@@ -67,10 +43,6 @@ dependencies {
     // Spring Boot 对这些运维相关的功能进行了整合，形成了一个功能完备和可定制的功能集，称之为 Actuator。
     compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
 
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
-        exclude module: "spring-boot-starter-tomcat"
-    }
-    compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-freemarker:${springBootVersion}")
 //    compile("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
     compile('org.apache.commons:commons-pool2:2.4.2')
@@ -83,19 +55,15 @@ dependencies {
     } else {
         println "not compile actuator"
     }
-
-
     compile("org.codehaus.groovy:groovy-all:2.4.6")
     compile("org.springframework.boot:spring-boot-starter-remote-shell:${springBootVersion}")
     compile('com.google.guava:guava:18.0')
-    compile('org.apache.thrift:libthrift:0.9.3')
     compile('org.apache.httpcomponents:fluent-hc:4.5.2')
 
-    compile('com.seveniu:commons:0.0.13')
+    compile('commons-io:commons-io:2.4')
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 
-    //optional "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 compileJava.dependsOn(processResources)

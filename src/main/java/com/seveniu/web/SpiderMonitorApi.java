@@ -1,6 +1,6 @@
 package com.seveniu.web;
 
-import com.seveniu.common.json.Json;
+import com.seveniu.util.Json;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

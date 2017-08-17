@@ -1,6 +1,7 @@
 package com.seveniu.fileDownloader.recorder;
 
-import com.seveniu.thriftServer.Result;
+
+import com.seveniu.fileDownloader.Result;
 
 /**
  * Created by seveniu on 5/24/16.

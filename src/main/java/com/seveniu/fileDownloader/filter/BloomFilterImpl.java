@@ -3,9 +3,9 @@ package com.seveniu.fileDownloader.filter;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnel;
 import com.google.common.hash.Funnels;
-import com.seveniu.common.tools.ShutdownHook;
-import com.seveniu.common.tools.ShutdownHookManager;
 import com.seveniu.def.SystemError;
+import com.seveniu.util.ShutdownHook;
+import com.seveniu.util.ShutdownHookManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +93,9 @@ public class BloomFilterImpl implements FileFilter, ShutdownHook {
     }
 
     private AtomicBoolean inSerialize = new AtomicBoolean();
+
     private void serializableSync() {
-        if(inSerialize.getAndSet(true)) {
+        if (inSerialize.getAndSet(true)) {
             return;
         }
         new Thread(new Runnable() {
