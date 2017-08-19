@@ -46,7 +46,6 @@ public class FileDownloadManager {
     @Resource(name = "${fileDownloader.recorder}")
     private FileRecorder fileRecorder;
     private int httpClientThreadNum;
-    private int httpClientTimeout = 8; //second
 
     @Autowired
     public FileDownloadManager(@Value("${fileDownloader.threadNum}") int threadNum) {
@@ -84,9 +83,9 @@ public class FileDownloadManager {
         cm.setMaxTotal(httpClientThreadNum);
         cm.setDefaultMaxPerRoute(4);
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(httpClientTimeout * 1000)
-                .setConnectionRequestTimeout(httpClientTimeout * 1000)
-                .setSocketTimeout(httpClientTimeout * 1000).build();
+                .setConnectTimeout(4 * 1000)
+                .setConnectionRequestTimeout(10 * 1000)
+                .setSocketTimeout(6 * 1000).build();
         return HttpClients.custom()
                 .setDefaultRequestConfig(requestConfig)
                 .setConnectionManager(cm).build();
