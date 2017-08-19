@@ -4,6 +4,7 @@ import com.seveniu.fileDownloader.filter.FileFilter;
 import com.seveniu.fileDownloader.recorder.FileRecorder;
 import com.seveniu.fileDownloader.storage.FileStorage;
 import com.seveniu.util.AppContext;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -44,10 +45,13 @@ public class FileDownloadManager {
     private FileStorage fileStorage;
     @Resource(name = "${fileDownloader.recorder}")
     private FileRecorder fileRecorder;
+    private int httpClientThreadNum;
+    private int httpClientTimeout = 8; //second
 
     @Autowired
     public FileDownloadManager(@Value("${fileDownloader.threadNum}") int threadNum) {
         this.threadNum = threadNum;
+        this.httpClientThreadNum = threadNum * 3;
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum, new ThreadFactory() {
             AtomicInteger count = new AtomicInteger(0);
 
@@ -77,8 +81,16 @@ public class FileDownloadManager {
     private CloseableHttpClient getHttpClient() {
 
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(5, TimeUnit.MINUTES);
-        cm.setMaxTotal(threadNum * 3);
-        return HttpClients.custom().setConnectionManager(cm).build();
+        cm.setMaxTotal(httpClientThreadNum);
+        cm.setDefaultMaxPerRoute(4);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(httpClientTimeout * 1000)
+                .setConnectionRequestTimeout(httpClientTimeout * 1000)
+                .setSocketTimeout(httpClientTimeout * 1000).build();
+        return HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setConnectionManager(cm).build();
+
     }
 
     public static FileDownloadManager get() {
