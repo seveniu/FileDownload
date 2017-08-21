@@ -29,4 +29,5 @@
 
     <logger name="com.seveniu" level="DEBUG" >
     </logger>
+    <logger name="org.apache.http.impl.conn" level="DEBUG"/>
 </configuration>

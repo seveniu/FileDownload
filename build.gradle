@@ -18,11 +18,12 @@ buildscript {
     }
 }
 
-
+plugins {
+    id 'org.springframework.boot' version '1.5.6.RELEASE'
+}
 apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
 
 jar {
     baseName = 'fileDownload'
