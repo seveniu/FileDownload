@@ -75,7 +75,8 @@ public class FileDownloadManager {
         }
 
         CountDownExecutor countDownExecutor = new CountDownExecutor(executor, fileDownloadJobs);
-        countDownExecutor.await(urls.size() * 10, TimeUnit.SECONDS);
+        countDownExecutor.execute(urls.size() * 10, TimeUnit.SECONDS);
+        logger.info("downloader thread active num : {}", executor.getActiveCount());
         return result.getResultList();
     }
 

@@ -19,7 +19,7 @@ public class CountDownExecutor {
         this.countDownLatch = new CountDownLatch(tasks.length);
     }
 
-    public void await(long time, TimeUnit timeUnit) throws InterruptedException {
+    public void execute(long time, TimeUnit timeUnit) throws InterruptedException {
         for (Runnable task : tasks) {
             execute(task);
         }
