@@ -8,7 +8,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -21,6 +20,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -40,6 +40,7 @@ public class FileDownloadJob implements Runnable {
     private FileStorage fileStorage;
     private FileRecorder fileRecorder;
     private DownloadResult resultList;
+    private static AtomicInteger downloadCounter = new AtomicInteger();
 
     public FileDownloadJob(String url, FileFilter fileFilter, FileStorage fileStorage,
                            FileRecorder fileRecorder, CloseableHttpClient httpClient, DownloadResult resultList) {
@@ -58,6 +59,7 @@ public class FileDownloadJob implements Runnable {
         if (fileFilter.contain(url)) {
             Result result = fileRecorder.getRecorder(url);
             if (result != null) {
+                logger.info("url exist : {}", url);
                 resultList.add(result);
                 return;
             }
@@ -117,6 +119,10 @@ public class FileDownloadJob implements Runnable {
             HttpEntity entity = responseGet.getEntity();
             inputStream = entity.getContent();
             byte[] bytes = IOUtils.toByteArray(inputStream);
+            downloadCounter.incrementAndGet();
+            if (downloadCounter.get() % 100 == 0) {
+                logger.info("download count : {}", downloadCounter.get());
+            }
             return fileDownloadProcess.process(url, fileName, contentType, bytes);
         } catch (Exception e) {
             //TODO:下载 错误 时,记录
@@ -171,14 +177,4 @@ public class FileDownloadJob implements Runnable {
         return null;
     }
 
-    public static void main(String[] args) throws IOException {
-        String url = "http://www.gdgz.gov.cn/webImage/image/ZYM_8121??(2).jpg";
-        byte[] bytes = Request.Get(url)
-                .connectTimeout(20 * 1000)
-                .addHeader("User-Agent", UserAgent.getUserAgent())
-                .addHeader("referer", getReferer(url))
-                .execute()
-                .returnContent()
-                .asBytes();
-    }
 }
