@@ -51,6 +51,8 @@ public class FileDownloadManager {
     public FileDownloadManager(@Value("${fileDownloader.threadNum}") int threadNum) {
         this.threadNum = threadNum;
         this.httpClientThreadNum = threadNum * 3;
+        logger.info("thread num : {}, download thread num : {}", threadNum, httpClientThreadNum);
+
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum, new ThreadFactory() {
             AtomicInteger count = new AtomicInteger(0);
 
