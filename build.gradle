@@ -1,25 +1,12 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.6.RELEASE'
+}
 
-println("******************")
 
 // project的额外属性，这里用于定义profile属性，模拟maven的profile
 ext {
     // profile 默认值 在 gradle.properties 中定义
     println "profile is : ${profile}"
-}
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
-        mavenCentral()
-        maven { url 'https://repo.spring.io/plugins-release' }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
-
-plugins {
-    id 'org.springframework.boot' version '1.5.6.RELEASE'
 }
 apply plugin: 'application'
 apply plugin: 'java'
