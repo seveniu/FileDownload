@@ -82,10 +82,11 @@ public class FileDownloadManager {
             }
             fileDownloadJobs.add(new FileDownloadJob(url, fileFilter, fileStorage, fileRecorder, httpClient, result));
         }
-
-        CountDownExecutor countDownExecutor = new CountDownExecutor(executor, fileDownloadJobs);
-        countDownExecutor.execute(urls.size() * 10, TimeUnit.SECONDS);
-        logger.info("downloader thread active num : {}", executor.getActiveCount());
+        if (fileDownloadJobs.size() > 0) {
+            CountDownExecutor countDownExecutor = new CountDownExecutor(executor, fileDownloadJobs);
+            countDownExecutor.execute(urls.size() * 10, TimeUnit.SECONDS);
+            logger.info("downloader thread active num : {}", executor.getActiveCount());
+        }
         return result.getResultList();
     }
 
