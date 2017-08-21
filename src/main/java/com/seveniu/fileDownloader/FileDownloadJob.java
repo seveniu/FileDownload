@@ -70,7 +70,7 @@ public class FileDownloadJob implements Runnable {
         if (result == null) {
             return;
         }
-        logger.debug("file download done, cost : {}ms ----  url : - {} name : {}", url, result.getStorageName(), System.currentTimeMillis() - startTime);
+        logger.debug("file download done, cost : {}ms ----  url : - {} name : {}", System.currentTimeMillis() - startTime, url, result.getStorageName());
         resultList.add(result);
     }
 
