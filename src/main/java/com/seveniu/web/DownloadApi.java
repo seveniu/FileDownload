@@ -6,6 +6,7 @@ import com.seveniu.fileDownloader.Result;
 import com.seveniu.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +28,7 @@ public class DownloadApi {
 
     @RequestMapping(value = "/", method = RequestMethod.POST, produces = "text/json;charset=UTF-8")
     @ResponseBody
-    public String getAll(String urls) {
+    public String getAll(@RequestBody String urls) {
         List<String> urlList = Json.toObject(urls, new TypeReference<List<String>>() {
         });
         try {

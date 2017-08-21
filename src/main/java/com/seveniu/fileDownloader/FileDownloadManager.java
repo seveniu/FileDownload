@@ -50,7 +50,7 @@ public class FileDownloadManager {
     @Autowired
     public FileDownloadManager(@Value("${fileDownloader.threadNum}") int threadNum) {
         this.threadNum = threadNum;
-        this.httpClientThreadNum = threadNum * 3;
+        this.httpClientThreadNum = threadNum * 2;
         logger.info("thread num : {}, download thread num : {}", threadNum, httpClientThreadNum);
 
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum, new ThreadFactory() {
@@ -83,11 +83,11 @@ public class FileDownloadManager {
 
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(5, TimeUnit.MINUTES);
         cm.setMaxTotal(httpClientThreadNum);
-        cm.setDefaultMaxPerRoute(4);
+        cm.setDefaultMaxPerRoute(40);
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(4 * 1000)
-                .setConnectionRequestTimeout(10 * 1000)
-                .setSocketTimeout(6 * 1000).build();
+                .setConnectTimeout(4 * 1000) // 建立连接的时间
+                .setConnectionRequestTimeout(10 * 1000) // 等待数据的时间，在建立连接之后
+                .setSocketTimeout(10 * 1000).build(); // 从连接池中取连接等待的时间
         return HttpClients.custom()
                 .setDefaultRequestConfig(requestConfig)
                 .setConnectionManager(cm).build();
