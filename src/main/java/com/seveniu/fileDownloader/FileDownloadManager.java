@@ -71,6 +71,15 @@ public class FileDownloadManager {
         DownloadResult result = new DownloadResult(urls.size());
         FileDownloadJob[] fileDownloadJobs = new FileDownloadJob[urls.size()];
         for (int i = 0; i < fileDownloadJobs.length; i++) {
+            String url = urls.get(i);
+            if (fileFilter.contain(url)) {
+                Result recorder = fileRecorder.getRecorder(url);
+                if (recorder != null) {
+//                    logger.debug("url exist : {}", url);
+                    result.add(recorder);
+                    continue;
+                }
+            }
             fileDownloadJobs[i] = new FileDownloadJob(urls.get(i), fileFilter, fileStorage, fileRecorder, httpClient, result);
         }
 
