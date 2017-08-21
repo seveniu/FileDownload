@@ -65,12 +65,12 @@ public class FileDownloadJob implements Runnable {
             }
         }
         long startTime = System.currentTimeMillis();
-        logger.info("start download url : {}", url);
+//        logger.info("start download url : {}", url);
         Result result = download(url, fileDownloadProcess);
         if (result == null) {
             return;
         }
-        logger.debug("file download done ----  url : - {} name : {} -- cost : {}ms", url, result.getStorageName(), System.currentTimeMillis() - startTime);
+        logger.debug("file download done, cost : {}ms ----  url : - {} name : {}", url, result.getStorageName(), System.currentTimeMillis() - startTime);
         resultList.add(result);
     }
 
