@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -69,9 +70,8 @@ public class FileDownloadManager {
             return Collections.emptyMap();
         }
         DownloadResult result = new DownloadResult(urls.size());
-        FileDownloadJob[] fileDownloadJobs = new FileDownloadJob[urls.size()];
-        for (int i = 0; i < fileDownloadJobs.length; i++) {
-            String url = urls.get(i);
+        List<FileDownloadJob> fileDownloadJobs = new LinkedList<>();
+        for (String url : urls) {
             if (fileFilter.contain(url)) {
                 Result recorder = fileRecorder.getRecorder(url);
                 if (recorder != null) {
@@ -80,7 +80,7 @@ public class FileDownloadManager {
                     continue;
                 }
             }
-            fileDownloadJobs[i] = new FileDownloadJob(urls.get(i), fileFilter, fileStorage, fileRecorder, httpClient, result);
+            fileDownloadJobs.add(new FileDownloadJob(url, fileFilter, fileStorage, fileRecorder, httpClient, result));
         }
 
         CountDownExecutor countDownExecutor = new CountDownExecutor(executor, fileDownloadJobs);

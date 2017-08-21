@@ -1,5 +1,6 @@
 package com.seveniu.fileDownloader;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -11,12 +12,12 @@ import java.util.concurrent.TimeUnit;
 public class CountDownExecutor {
     private ThreadPoolExecutor threadPoolExecutor;
     private CountDownLatch countDownLatch;
-    private Runnable[] tasks;
+    private List<FileDownloadJob> tasks;
 
-    public CountDownExecutor(ThreadPoolExecutor threadPoolExecutor, Runnable[] tasks) {
+    public CountDownExecutor(ThreadPoolExecutor threadPoolExecutor, List<FileDownloadJob> tasks) {
         this.threadPoolExecutor = threadPoolExecutor;
         this.tasks = tasks;
-        this.countDownLatch = new CountDownLatch(tasks.length);
+        this.countDownLatch = new CountDownLatch(tasks.size());
     }
 
     public void execute(long time, TimeUnit timeUnit) throws InterruptedException {
